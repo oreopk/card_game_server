@@ -22,9 +22,27 @@ let cards = [
   { id: "4", x: 400, y: 100, type: "nishchiy" },
 ];
 
+let cards_container = [];
+
+function createGrid(x, y, width, height) {
+  const grid = [];
+  const cellWidth = (width) / 10;
+  
+    for (let col = 0; col < 10; col++) {
+      grid.push({
+        id: `${col}`,
+        x: x + col * (cellWidth),
+      });
+    }
+  return grid;
+}
+
+cards_container.push(...createGrid(100, 50, 1000, 1100));
+
+
 io.on('connection', (socket) => {
    socket.emit('cardsUpdate', cards);
-
+   socket.emit('cardsContainerUpdate', cards_container);
    socket.on('moveSingleCard', ({ id, x, y }) => {
     cards = cards.map(card => card.id === id ? { ...card, x, y } : card);
     io.emit('cardsUpdate', cards);
