@@ -24,20 +24,36 @@ let cards = [
 
 let cards_container = [];
 
-function createGrid(x, y, width, height) {
+function createGrid(rows, cols, screenWidth, screenHeight) {
   const grid = [];
-  const cellWidth = (width) / 10;
+  const cellWidth = 200;
+  const cellHeight = 300;
+  // const cellWidth = screenWidth / cols;
+  // const cellHeight = screenHeight / rows;
+  const totalGridWidth = cols * cellWidth;
+  const totalGridHeight = rows * cellHeight;
   
-    for (let col = 0; col < 10; col++) {
+  const startX = (screenWidth - totalGridWidth) / 2;
+  const startY = (screenHeight - totalGridHeight) / 2;
+  
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
       grid.push({
-        id: `${col}`,
-        x: x + col * (cellWidth),
+        id: `${row}-${col}`,
+        x: startX + col * cellWidth,
+        y: startY + row * cellHeight,
+        width: cellWidth,
+        height: cellHeight
       });
     }
+  }
   return grid;
 }
 
-cards_container.push(...createGrid(100, 50, 1000, 1100));
+
+const SCREEN_WIDTH = 1920;
+const SCREEN_HEIGHT = 1080;
+cards_container.push(...createGrid(3, 3, SCREEN_WIDTH, SCREEN_HEIGHT));
 
 
 io.on('connection', (socket) => {
